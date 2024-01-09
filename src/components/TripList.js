@@ -5,17 +5,18 @@ import "./TripList.css";
 
 const TripList = () => {
   const [trips, setTrips] = useState([]);
+  const [url, setUrl] = useState("http://localhost:3005/trips");
 
   useEffect(() => {
-    axios.get("http://localhost:3005/trips").then((result) => {
+    axios.get(url).then((result) => {
       setTrips(result.data);
     });
 
     // Cleaning callback
     return () => {
-      // Do nothing for now;
+      // Do nothing for now
     };
-  }, []);
+  }, [url]);
 
   return (
     <div className="trip-list">
@@ -28,6 +29,16 @@ const TripList = () => {
           </li>
         ))}
       </ul>
+      <div className="filters">
+        <button
+          onClick={() => setUrl("http://localhost:3005/trips?location=Europe")}
+        >
+          European Trips
+        </button>
+        <button onClick={() => setUrl("http://localhost:3005/trips")}>
+          All Trips
+        </button>
+      </div>
     </div>
   );
 };
