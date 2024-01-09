@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 import "./TripList.css";
@@ -7,16 +7,20 @@ const TripList = () => {
   const [trips, setTrips] = useState([]);
   const [url, setUrl] = useState("http://localhost:3005/trips");
 
-  useEffect(() => {
+  const fetchTrips = useCallback(() => {
     axios.get(url).then((result) => {
       setTrips(result.data);
     });
+  }, [url]);
+
+  useEffect(() => {
+    fetchTrips();
 
     // Cleaning callback
     return () => {
       // Do nothing for now
     };
-  }, [url]);
+  }, [fetchTrips]);
 
   return (
     <div className="trip-list">
